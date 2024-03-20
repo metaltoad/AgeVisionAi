@@ -1,7 +1,10 @@
-import boto3
+import io
 import os
 import json
+import boto3
+import base64
 
+from datetime import datetime
 from typing import Dict, Union, List
 
 s3_bucket: str = os.environ["S3_BUCKET"]
@@ -25,14 +28,39 @@ def lambda_handler(event: Dict[str, str], context):
     try:
         # Extract information from event
         body: Dict[str, str] = json.loads(event.get("body", "{}"))
-        s3_key: str | None = body.get("FileName")
 
-        if not s3_key:
-            raise ClientError("No file name provided")
+        base64_image = body.get("Image")
+        file_extension = body.get("FileExtension")
+
+        if not base64_image:
+            raise ClientError("Image not sent")
+
+        if not file_extension:
+            raise ClientError("File extension not sent")
+
+        # Define key with unique hash
+        timestamp: str = datetime.now().isoformat()
+        object_key: str = f"{timestamp}.{file_extension}"
+
+        # Remove the data URI prefix if it exists
+        base64_image = base64_image.split(",")[-1]
+
+        # Add padding if necessary
+        padding = b"=" * (-len(base64_image) % 4)
+        base64_image += padding.decode()
+
+        image_data = base64.urlsafe_b64decode(base64_image)
+
+        s3_client.put_object(
+            Bucket=s3_bucket,
+            Key=object_key,
+            Body=io.BytesIO(image_data),
+            ContentType="image/png",
+        )
 
         # Analyze image
         analysis = rekognition_client.detect_faces(
-            Image={"S3Object": {"Bucket": s3_bucket, "Name": s3_key}},
+            Image={"S3Object": {"Bucket": s3_bucket, "Name": object_key}},
             Attributes=["AGE_RANGE"],
         )
 
@@ -55,7 +83,7 @@ def lambda_handler(event: Dict[str, str], context):
 
         pre_signed_url = s3_client.generate_presigned_url(
             "get_object",
-            Params={"Bucket": s3_bucket, "Key": s3_key},
+            Params={"Bucket": s3_bucket, "Key": object_key},
             ExpiresIn=expiration,
         )
 
