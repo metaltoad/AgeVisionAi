@@ -27,12 +27,12 @@ def lambda_handler(event: Dict[str, str], context):
         body: Dict[str, str] = json.loads(event.get("body", "{}"))
         s3_key: str | None = body.get("FileName")
 
-        # Analyse image with rekogniton
-        analysis_types: List[str] = ["AGE_RANGE"]
+        if not s3_key:
+            raise ClientError("No file name provided")
 
         analysis = rekognition_client.detect_faces(
             Image={"S3Object": {"Bucket": s3_bucket, "Name": s3_key}},
-            Attributes=analysis_types,
+            Attributes=["AGE_RANGE"],
         )
 
     except ServerError as e:
