@@ -30,6 +30,11 @@ def lambda_handler(event: Dict[str, str], context):
         # Analyse image with rekogniton
         analysis_types: List[str] = ["AGE_RANGE"]
 
+        analysis = rekognition_client.detect_faces(
+            Image={"S3Object": {"Bucket": s3_bucket, "Name": s3_key}},
+            Attributes=analysis_types,
+        )
+
     except ServerError as e:
         api_response["statusCode"] = 500
         api_response["body"] = f"Server error: please check cloudfront logs"
