@@ -5,7 +5,7 @@ from typing import Dict, Union
 from datetime import datetime
 
 s3_bucket: str = os.environ["S3_BUCKET"]
-s3_client = boto3.client("s3")
+s3_client = boto3.client("s3", region_name="us-west-2")
 
 
 class ClientError(Exception):
@@ -19,7 +19,10 @@ class ServerError(Exception):
 def lambda_handler(event: Dict[str, str], context):
     # Define responses
     api_response: Dict[str, Union[int, str]] = {"statusCode": 200, "body": ""}
-    response: Dict[str, str] = {"PreSignedUrl": "", "FileName": ""}
+    response: Dict[str, Union[str, Dict[str, str]]] = {
+        "PreSignedInformation": "",
+        "FileName": "",
+    }
 
     try:
         # Create presigned url for S3
@@ -36,16 +39,13 @@ def lambda_handler(event: Dict[str, str], context):
         object_key: str = f"{timestamp}.{file_extension}"
 
         # Generate PUT presigned URL
-        presigned_url: str = s3_client.generate_presigned_url(
-            "put_object",
-            {
-                "Bucket": s3_bucket,
-                "Key": object_key,
-            },
+        presigned_url: Dict = s3_client.generate_presigned_post(
+            Bucket=s3_bucket,
+            Key=object_key,
         )
 
         # Update response
-        response["PreSignedUrl"] = presigned_url
+        response["PreSignedInformation"] = presigned_url
         response["FileName"] = object_key
 
     except ServerError as e:
