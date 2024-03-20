@@ -42,10 +42,10 @@ def lambda_handler(event: Dict[str, str], context):
         face_details = analysis["FaceDetails"][0]
 
         # Extract age
-        upper_age = face_details["AgeRange"]["High"]
-        lower_age = face_details["AgeRange"]["Low"]
+        upper_age: int = face_details["AgeRange"]["High"]
+        lower_age: int = face_details["AgeRange"]["Low"]
 
-        age: float = (upper_age + lower_age) / 2
+        age: int = int((upper_age + lower_age) / 2)
 
         # Update response
         response["Age"] = age
