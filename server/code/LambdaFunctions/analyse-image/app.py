@@ -2,6 +2,7 @@ import os
 import boto3
 import json
 from typing import Dict, Union
+from datetime import datetime
 
 s3_bucket: str = os.environ["S3_BUCKET"]
 s3_client = boto3.client("s3")
@@ -30,8 +31,9 @@ def lambda_handler(event: Dict[str, str], context):
         if not file_extension:
             raise ClientError("No file extension provided")
 
-        # TODO: Define key with unique hash
-        object_key: str = f"test_image.{file_extension}"
+        # Define key with unique hash
+        timestamp: str = datetime.now().isoformat()
+        object_key: str = f"{timestamp}.{file_extension}"
 
         # Generate PUT presigned URL
         presigned_url: str = s3_client.generate_presigned_url(
