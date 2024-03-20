@@ -20,7 +20,7 @@ class ServerError(Exception):
 def lambda_handler(event: Dict[str, str], context):
 
     api_response: Dict[str, Union[int, str]] = {"statusCode": 200, "body": ""}
-    response: Dict[str, str] = {"PreSignedViewUrl": ""}
+    response: Dict[str, Union[str, float]] = {"PreSignedViewUrl": "", "Age": 0}
 
     try:
         # Extract information from event
@@ -30,10 +30,37 @@ def lambda_handler(event: Dict[str, str], context):
         if not s3_key:
             raise ClientError("No file name provided")
 
+        # Analyze image
         analysis = rekognition_client.detect_faces(
             Image={"S3Object": {"Bucket": s3_bucket, "Name": s3_key}},
             Attributes=["AGE_RANGE"],
         )
+
+        if len(analysis["FaceDetails"]) == 0:
+            raise ClientError("No faces detected")
+
+        face_details = analysis["FaceDetails"][0]
+
+        # Extract age
+        upper_age = face_details["AgeRange"]["High"]
+        lower_age = face_details["AgeRange"]["Low"]
+
+        age: float = (upper_age + lower_age) / 2
+
+        # Update response
+        response["Age"] = age
+
+        # Get presigned url to view image in FE for 24 hours
+        expiration: int = 60 * 60 * 24  # 24 hours
+
+        pre_signed_url = s3_client.generate_presigned_url(
+            "get_object",
+            Params={"Bucket": s3_bucket, "Key": s3_key},
+            ExpiresIn=expiration,
+        )
+
+        # Add presigned url to response
+        response["PreSignedViewUrl"] = pre_signed_url
 
     except ServerError as e:
         api_response["statusCode"] = 500
