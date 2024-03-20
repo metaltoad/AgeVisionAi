@@ -1,11 +1,12 @@
-import os
 import boto3
+import os
 import json
-from typing import Dict, Union
-from datetime import datetime
+
+from typing import Dict, Union, List
 
 s3_bucket: str = os.environ["S3_BUCKET"]
 s3_client = boto3.client("s3")
+rekognition_client = boto3.client("rekognition")
 
 
 class ClientError(Exception):
@@ -17,36 +18,17 @@ class ServerError(Exception):
 
 
 def lambda_handler(event: Dict[str, str], context):
-    # Define responses
+
     api_response: Dict[str, Union[int, str]] = {"statusCode": 200, "body": ""}
-    response: Dict[str, str] = {"PreSignedUrl": "", "FileName": ""}
+    response: Dict[str, str] = {"PreSignedViewUrl": ""}
 
     try:
-        # Create presigned url for S3
+        # Extract information from event
         body: Dict[str, str] = json.loads(event.get("body", "{}"))
+        s3_key: str | None = body.get("FileName")
 
-        # Get file extension
-        file_extension: str | None = body.get("FileExtension")
-
-        if not file_extension:
-            raise ClientError("No file extension provided")
-
-        # Define key with unique hash
-        timestamp: str = datetime.now().isoformat()
-        object_key: str = f"{timestamp}.{file_extension}"
-
-        # Generate PUT presigned URL
-        presigned_url: str = s3_client.generate_presigned_url(
-            "put_object",
-            {
-                "Bucket": s3_bucket,
-                "Key": object_key,
-            },
-        )
-
-        # Update response
-        response["PreSignedUrl"] = presigned_url
-        response["FileName"] = object_key
+        # Analyse image with rekogniton
+        analysis_types: List[str] = ["AGE_RANGE"]
 
     except ServerError as e:
         api_response["statusCode"] = 500
