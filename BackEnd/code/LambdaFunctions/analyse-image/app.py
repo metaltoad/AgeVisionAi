@@ -22,7 +22,14 @@ class ServerError(Exception):
 
 def lambda_handler(event: Dict[str, str], context):
 
-    api_response: Dict[str, Union[int, str]] = {"statusCode": 200, "body": ""}
+    api_response: Dict[str, Union[int, str, Dict]] = {
+        "statusCode": 200,
+        "body": "",
+        "headers": {
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "application/json",
+        },
+    }
     response: Dict[str, Union[str, float]] = {"Age": 0}
 
     try:
