@@ -23,7 +23,7 @@ class ServerError(Exception):
 def lambda_handler(event: Dict[str, str], context):
 
     api_response: Dict[str, Union[int, str]] = {"statusCode": 200, "body": ""}
-    response: Dict[str, Union[str, float]] = {"PreSignedViewUrl": "", "Age": 0}
+    response: Dict[str, Union[str, float]] = {"Age": 0}
 
     try:
         # Extract information from event
@@ -77,18 +77,6 @@ def lambda_handler(event: Dict[str, str], context):
 
         # Update response
         response["Age"] = age
-
-        # Get presigned url to view image in FE for 24 hours
-        expiration: int = 60 * 60 * 24  # 24 hours
-
-        pre_signed_url = s3_client.generate_presigned_url(
-            "get_object",
-            Params={"Bucket": s3_bucket, "Key": object_key},
-            ExpiresIn=expiration,
-        )
-
-        # Add presigned url to response
-        response["PreSignedViewUrl"] = pre_signed_url
 
     except ServerError as e:
         api_response["statusCode"] = 500
