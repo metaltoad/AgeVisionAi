@@ -1,12 +1,6 @@
-import convertToBase64 from "../../utils/convertToBase64";
 import "./Home.scss";
 
 export const Home = () => {
-  const handleUpload = (e) => {
-    console.log(e.target.value);
-    convertToBase64(e.target.value);
-  };
-
   return (
     <div className="home">
       <main>
@@ -15,7 +9,6 @@ export const Home = () => {
             type="file"
             accept="image/png, image/jpeg"
             style={{ display: "none" }}
-            onClick={(e) => handleUpload(e)}
             id="contained-button-file"
           />
           <label htmlFor="contained-button-file">
