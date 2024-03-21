@@ -2,6 +2,7 @@ import "./Home.scss";
 
 import { Card, CardContent } from "@mui/material";
 import { CameraButton, UploadButton } from "../../components/ActionButtons";
+import { InfoWrapper } from "../../components/InfoWrapper";
 
 export const Home = () => {
   return (
@@ -12,11 +13,7 @@ export const Home = () => {
             <UploadButton />
             <CameraButton />
           </div>
-          <div className="info-wrapper">
-            <span>Supported formats: png, jpeg</span>
-            <br></br>
-            <span>Maximum file size: 6MB</span>
-          </div>
+          <InfoWrapper />
         </CardContent>
       </Card>
     </div>
