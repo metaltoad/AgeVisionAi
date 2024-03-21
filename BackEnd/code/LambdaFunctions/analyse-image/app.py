@@ -32,8 +32,7 @@ def lambda_handler(event: Dict[str, str], context):
     }
     response: Dict[str, Union[str, int, List, Dict]] = {
         "Age": 0,
-        "Emotions": [],
-        "HigherEmotion": {},
+        "Emotions": []
     }
 
     try:
