@@ -1,0 +1,14 @@
+.wrapper {
+  background-image: url("background.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: bottom;
+  padding: 16px;
+  height: -webkit-fill-available;
+  display: flex;
+  flex-direction: column;
+
+  .children {
+    flex-grow: 1;
+  }
+}
