@@ -9,6 +9,7 @@
   flex-direction: column;
 
   .children {
+    display: flex;
     flex-grow: 1;
   }
 }

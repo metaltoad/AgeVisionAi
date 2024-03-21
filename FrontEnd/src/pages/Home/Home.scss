@@ -2,33 +2,54 @@
   display: flex;
   justify-content: center;
   align-items: center;
-
-  height: 100%;
   width: 100%;
-}
 
-main {
-  display: flex;
-  flex-direction: column;
+  .card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    border: 8px solid #f3f3f3;
+    border-radius: 8px;
+    width: 35rem;
+    height: 50rem;
+    min-width: 300px;
+    min-height: 300px;
+    max-width: 700px;
+    max-height: 700px;
+    background-color: black;
 
-  justify-content: center;
-  align-items: center;
+    .card-content {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      row-gap: 16px;
+      background-image: url("background.jpg");
+      background-repeat: no-repeat;
+      background-position: bottom;
+      background-size: cover;
 
-  position: relative;
+      .actions-wrapper {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        column-gap: 30%;
 
-  border: 8px solid #f3f3f3;
-  border-radius: 8px;
-
-  width: 35rem;
-  height: 35rem;
-
-  min-width: 300px;
-  min-height: 300px;
-
-  max-width: 700px;
-  max-height: 700px;
-
-  background-color: rgba(34, 32, 32, 0.459);
+        .action-button {
+          border: 1px solid #f3f3f3;
+          border-radius: 8px;
+          background-color: rgba(30, 29, 34, 0.9);
+          height: 90px;
+          width: 90px;
+        }
+      }
+    }
+  }
 }
 
 .icons-container {
@@ -36,6 +57,7 @@ main {
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  border-radius: 8px;
 
   width: 100%;
   gap: 4rem;
