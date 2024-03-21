@@ -10,28 +10,25 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
+import { SnackBarProvider } from "./context/SnackbarContext";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: (
-      <Wrapper>
-        <Home />
-      </Wrapper>
-    ),
+    element: <Home />,
   },
   {
     path: "/results",
-    element: (
-      <Wrapper>
-        <Results />
-      </Wrapper>
-    ),
+    element: <Results />,
   },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <SnackBarProvider>
+      <Wrapper>
+        <RouterProvider router={router} />
+      </Wrapper>
+    </SnackBarProvider>
   </React.StrictMode>
 );
