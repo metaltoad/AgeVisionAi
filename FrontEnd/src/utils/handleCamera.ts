@@ -1,4 +1,4 @@
-export default async function handleCamera(): Promise<string> {
+export default async function handleCamera(setImage): Promise<string> {
   const stream = await navigator.mediaDevices.getUserMedia({ video: true });
 
   // Create video element and attach stream
@@ -29,6 +29,8 @@ export default async function handleCamera(): Promise<string> {
 
       // Get image data URL from canvas
       const imageDataURL = canvasElement.toDataURL("image/png");
+
+      setImage(imageDataURL);
 
       // Clean up: stop streaming and remove elements
       stream.getVideoTracks().forEach((track) => track.stop());

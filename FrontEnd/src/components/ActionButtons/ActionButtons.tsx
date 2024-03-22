@@ -5,6 +5,9 @@ import "./ActionButtons.scss";
 import convertToBase64 from "../../utils/convertToBase64";
 import { provider } from "../../services/provider";
 import handleCamera from "../../utils/handleCamera";
+import { useAtom } from "jotai";
+import { imageAtom, isLoadingResultsAtom } from "../../store/mainAtom";
+import { useNavigate } from "react-router-dom";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -18,19 +21,19 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 
-interface ButtonsInterface {
-  isLoadingResults?: boolean;
-}
+export function CameraButton() {
+  const [image, setImage] = useAtom(imageAtom);
+  const [isLoadingResults, setIsLoadingResults] = useAtom(isLoadingResultsAtom);
+  const navigate = useNavigate();
 
-export function CameraButton({ isLoadingResults = false }: ButtonsInterface) {
   const handleUpload = async () => {
-    const base64 = await handleCamera();
+    const base64 = await handleCamera(setImage);
 
     const imageInfo = await provider.getImageInfo({
       FileExtension: "png",
       Image: base64,
     });
-
+    navigate("/results");
     console.log("image info", imageInfo);
   };
 
@@ -46,13 +49,24 @@ export function CameraButton({ isLoadingResults = false }: ButtonsInterface) {
   );
 }
 
-export function UploadButton({ isLoadingResults = false }: ButtonsInterface) {
+export function UploadButton() {
+  const navigate = useNavigate();
+  const [image, setImage] = useAtom(imageAtom);
+  const [isLoadingResults, setIsLoadingResults] = useAtom(isLoadingResultsAtom);
+
   const handleUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     console.log(event.target);
 
     const file = event.target.files?.[0];
 
-    if (!file) return;
+    if (file) {
+      setImage(URL.createObjectURL(file));
+    } else {
+      return;
+    }
+
+    setIsLoadingResults(true);
+    navigate("/results");
 
     const imageType = file.type.split("/")[1];
 
@@ -61,7 +75,6 @@ export function UploadButton({ isLoadingResults = false }: ButtonsInterface) {
       FileExtension: imageType,
       Image: base64,
     });
-
     console.log("image info", imageInfo);
   };
 

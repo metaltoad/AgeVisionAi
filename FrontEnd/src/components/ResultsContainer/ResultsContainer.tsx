@@ -2,14 +2,11 @@ import React from "react";
 import { Typography, Card, CardContent } from "@mui/material";
 import "./ResultsContainer.scss";
 import ProgressBar from "../ProgressBar/ProgressBar";
+import { useAtom } from "jotai";
+import { isLoadingResultsAtom } from "../../store/mainAtom";
 
-interface ResultsContainerInterface {
-  isLoadingResults: boolean;
-}
-
-export const ResultsContainer = ({
-  isLoadingResults,
-}: ResultsContainerInterface) => {
+export const ResultsContainer = () => {
+  const [isLoadingResults, setIsLoadingResults] = useAtom(isLoadingResultsAtom);
   return (
     <React.Fragment>
       {isLoadingResults ? (
