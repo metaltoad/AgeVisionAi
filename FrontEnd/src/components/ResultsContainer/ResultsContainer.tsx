@@ -26,8 +26,14 @@ export const ResultsContainer = ({
         <Card className="results-card">
           <CardContent className="results-card-content">
             <div className="age-emotion-container">
-              <Typography>Age</Typography>
-              <Typography>Emotion</Typography>
+              <div>
+                <Typography>Age</Typography>
+                <Typography variant="h4">25</Typography>
+              </div>
+              <div>
+                <Typography>Emotion</Typography>
+                <Typography variant="h4">52%</Typography>
+              </div>
             </div>
           </CardContent>
         </Card>

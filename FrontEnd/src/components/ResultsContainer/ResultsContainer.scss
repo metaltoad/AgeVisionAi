@@ -2,7 +2,7 @@
 
 .results-card {
   width: 300px;
-  height: 90px;
+  height: 100px;
   background-color: $action-background-color !important;
   border-radius: $global-border-radius !important;
   color: $white-color !important;
@@ -21,6 +21,13 @@
       p {
         font-size: 16px;
         font-weight: bold !important;
+      }
+
+      div {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
       }
     }
   }
