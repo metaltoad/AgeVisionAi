@@ -30,10 +30,7 @@ def lambda_handler(event: Dict[str, str], context):
             "Content-Type": "application/json",
         },
     }
-    response: Dict[str, Union[str, int, List, Dict]] = {
-        "Age": 0,
-        "Emotions": []
-    }
+    response: Dict[str, Union[str, int, List, Dict]] = {"Age": 0, "Emotions": []}
 
     try:
         # Extract information from event
@@ -89,6 +86,9 @@ def lambda_handler(event: Dict[str, str], context):
             if emotion["Confidence"] > 40
         ]
         age: int = int((upper_age + lower_age) / 2)
+
+        # Deleting images for privacy reason
+        s3_client.delete_object(Bucket=s3_bucket, Key=object_key)
 
         # Update response
         response["Age"] = age
