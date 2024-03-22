@@ -7,11 +7,13 @@
   height: -webkit-fill-available;
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
 
   .children {
     display: flex;
     align-self: center;
     max-width: 1200px;
     flex-grow: 1;
+    padding: 2rem 0;
   }
 }

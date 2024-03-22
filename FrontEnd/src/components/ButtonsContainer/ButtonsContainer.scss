@@ -1,4 +1,9 @@
 .buttons-container {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
+  column-gap: 5rem;
+
+  .action-button {
+    width: 90px !important;
+  }
 }

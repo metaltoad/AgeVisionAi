@@ -16,7 +16,6 @@ export default function InfoWrapper({
       }`}
     >
       <span>Supported formats: png, jpeg</span>
-      <br></br>
       <span>Maximum file size: 6MB</span>
     </div>
   );

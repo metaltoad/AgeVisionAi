@@ -14,7 +14,7 @@
     position: relative;
     border: 8px solid #f3f3f3;
     border-radius: $global-border-radius;
-    width: 35rem;
+    width: 32rem;
     height: 50rem;
     min-width: 300px;
     min-height: 300px;
@@ -36,17 +36,22 @@
       background-size: cover;
 
       .actions-wrapper {
+        width: 100%;
         display: flex;
         flex-direction: row;
         justify-content: center;
         align-items: center;
-        column-gap: 30%;
+        column-gap: 15%;
       }
     }
 
     .info-wrapper {
       position: absolute;
       bottom: 20px;
+    }
+
+    @media screen and (max-width: 550px) {
+      width: auto !important;
     }
   }
 }

@@ -10,9 +10,9 @@ import {
 } from "../../store/mainAtom";
 
 export const ResultsContainer = () => {
-  const [isLoadingResults, setIsLoadingResults] = useAtom(isLoadingResultsAtom);
-  const [age, setAge] = useAtom(ageAtom);
-  const [emotion, setEmotion] = useAtom(emotionAtom);
+  const [isLoadingResults] = useAtom(isLoadingResultsAtom);
+  const [age] = useAtom(ageAtom);
+  const [emotion] = useAtom(emotionAtom);
 
   return (
     <React.Fragment>

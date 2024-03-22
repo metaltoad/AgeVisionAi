@@ -13,6 +13,7 @@ import {
   isLoadingResultsAtom,
 } from "../../store/mainAtom";
 import { useNavigate } from "react-router-dom";
+import { useSnackBar } from "../../context/SnackbarContext";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -26,28 +27,39 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 
+const ERROR_MESSAGE =
+  "An error has ocurred. Please check the supported formats and maximum file size before trying again.";
+
 export function CameraButton() {
-  const [image, setImage] = useAtom(imageAtom);
-  const [age, setAge] = useAtom(ageAtom);
-  const [emotion, setEmotion] = useAtom(emotionAtom);
-  const [isLoadingResults, setIsLoadingResults] = useAtom(isLoadingResultsAtom);
   const navigate = useNavigate();
+  const { showSnackBar } = useSnackBar();
+  const [, setImage] = useAtom(imageAtom);
+  const [, setAge] = useAtom(ageAtom);
+  const [, setEmotion] = useAtom(emotionAtom);
+  const [isLoadingResults, setIsLoadingResults] = useAtom(isLoadingResultsAtom);
 
   const handleUpload = async () => {
-    setIsLoadingResults(true);
+    try {
+      setIsLoadingResults(true);
 
-    const base64 = await handleCamera(setImage);
+      const base64 = await handleCamera(setImage);
 
-    const imageInfo = await provider.getImageInfo(
-      {
+      const { Age, Emotion } = await provider.getImageInfo({
         FileExtension: "png",
         Image: base64,
-      },
-      setAge,
-      setEmotion,
-      setIsLoadingResults
-    );
-    navigate("/results");
+      });
+
+      setAge(Age);
+      setEmotion(Emotion);
+      navigate("/results");
+    } catch {
+      showSnackBar(ERROR_MESSAGE, "error");
+      setImage("");
+      setAge(undefined);
+      setEmotion("");
+    } finally {
+      setIsLoadingResults(false);
+    }
   };
 
   return (
@@ -64,35 +76,43 @@ export function CameraButton() {
 
 export function UploadButton() {
   const navigate = useNavigate();
-  const [image, setImage] = useAtom(imageAtom);
-  const [age, setAge] = useAtom(ageAtom);
-  const [emotion, setEmotion] = useAtom(emotionAtom);
+  const { showSnackBar } = useSnackBar();
+  const [, setImage] = useAtom(imageAtom);
+  const [, setAge] = useAtom(ageAtom);
+  const [, setEmotion] = useAtom(emotionAtom);
   const [isLoadingResults, setIsLoadingResults] = useAtom(isLoadingResultsAtom);
 
   const handleUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    setIsLoadingResults(true);
-    const file = event.target.files?.[0];
+    try {
+      setIsLoadingResults(true);
+      const file = event.target.files?.[0];
 
-    if (file) {
-      setImage(URL.createObjectURL(file));
-    } else {
-      return;
-    }
+      if (file) {
+        setImage(URL.createObjectURL(file));
+      } else {
+        return;
+      }
 
-    navigate("/results");
+      navigate("/results");
 
-    const imageType = file.type.split("/")[1];
+      const imageType = file.type.split("/")[1];
 
-    const base64 = await convertToBase64({ File: file });
-    const imageInfo = await provider.getImageInfo(
-      {
+      const base64 = await convertToBase64({ File: file });
+      const { Age, Emotion } = await provider.getImageInfo({
         FileExtension: imageType,
         Image: base64,
-      },
-      setAge,
-      setEmotion,
-      setIsLoadingResults
-    );
+      });
+
+      setAge(Age);
+      setEmotion(Emotion);
+    } catch {
+      showSnackBar(ERROR_MESSAGE, "error");
+      setImage("");
+      setAge(undefined);
+      setEmotion("");
+    } finally {
+      setIsLoadingResults(false);
+    }
   };
 
   return (
