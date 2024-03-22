@@ -15,3 +15,11 @@
     transition: 100ms;
   }
 }
+
+.loading-button {
+  background-color: $action-loading-background-color !important;
+
+  :hover {
+    opacity: 1;
+  }
+}

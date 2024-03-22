@@ -18,7 +18,11 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 
-export function CameraButton() {
+interface ButtonsInterface {
+  isLoadingResults?: boolean;
+}
+
+export function CameraButton({ isLoadingResults = false }: ButtonsInterface) {
   const handleUpload = async () => {
     const base64 = await handleCamera();
 
@@ -31,13 +35,18 @@ export function CameraButton() {
   };
 
   return (
-    <Button onClick={handleUpload} className="action-button" color="inherit">
+    <Button
+      onClick={handleUpload}
+      className={`action-button ${isLoadingResults && "loading-button"}`}
+      disabled={isLoadingResults}
+      color="inherit"
+    >
       <img alt="Take a picture" src="/take-a-photo-icon.svg" height={50} />
     </Button>
   );
 }
 
-export function UploadButton() {
+export function UploadButton({ isLoadingResults = false }: ButtonsInterface) {
   const handleUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     console.log(event.target);
 
@@ -58,7 +67,8 @@ export function UploadButton() {
 
   return (
     <Button
-      className="action-button"
+      className={`action-button ${isLoadingResults && "loading-button"}`}
+      disabled={isLoadingResults}
       component="label"
       role={undefined}
       tabIndex={-1}

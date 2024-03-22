@@ -10,3 +10,19 @@
   width: calc(100% - 80px);
   padding: 20px;
 }
+
+.info-wrapper-results-page {
+  width: 260px;
+
+  @media (min-width: 768px) {
+    width: 310px;
+  }
+
+  @media (min-width: 1024px) {
+    width: 360px;
+  }
+
+  @media (min-width: 1440px) {
+    width: 460px;
+  }
+}
