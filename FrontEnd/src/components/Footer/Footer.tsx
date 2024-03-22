@@ -6,7 +6,7 @@ export const Footer = () => {
     <div className="footer">
       <Typography variant="body2">powered by</Typography>
       <a href="https://www.metaltoad.com" target="_blank">
-        <img src="metaltoad.png" alt="Metal Toad Logo" height={20} />
+        <img src="/metaltoad.png" alt="Metal Toad Logo" height={20} />
       </a>
     </div>
   );

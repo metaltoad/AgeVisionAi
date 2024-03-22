@@ -19,7 +19,7 @@ export const Header = () => {
           setEmotion("");
         }}
       >
-        <img src="logo.svg" alt="AgeVision AI Logo" height={30} />
+        <img src="/logo.svg" alt="AgeVision AI Logo" height={30} />
       </a>
       <Typography variant="h6">AgeVision AI</Typography>
     </div>
