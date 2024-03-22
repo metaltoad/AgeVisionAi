@@ -1,0 +1,25 @@
+@import "../../variables.scss";
+
+.action-button {
+  border: 1px solid #f3f3f3;
+  border-radius: $global-border-radius;
+  background-color: $action-background-color !important;
+
+  width: 120px;
+  aspect-ratio: 1/1;
+
+  transition: 100ms;
+
+  :hover {
+    opacity: 0.5;
+    transition: 100ms;
+  }
+}
+
+.loading-button {
+  background-color: $action-loading-background-color !important;
+
+  :hover {
+    opacity: 1;
+  }
+}

@@ -1,0 +1,58 @@
+@import "../../variables.scss";
+
+.results-card {
+  width: 300px;
+  height: 100px;
+  background-color: $action-background-color !important;
+  border-radius: $global-border-radius !important;
+  color: $white-color !important;
+
+  .results-card-content {
+    padding: 15px;
+    height: 100%;
+
+    .age-emotion-container {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      align-items: center;
+      margin-bottom: 10px;
+
+      p {
+        font-size: 16px;
+        font-weight: bold !important;
+      }
+
+      div {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+  }
+
+  @media (min-width: 768px) {
+    width: 350px;
+
+    .age-emotion-container {
+      p {
+        font-size: 18px !important;
+      }
+    }
+  }
+
+  @media (min-width: 1024px) {
+    width: 400px;
+  }
+
+  @media (min-width: 1440px) {
+    width: 500px;
+
+    .age-emotion-container {
+      p {
+        font-size: 20px !important;
+      }
+    }
+  }
+}

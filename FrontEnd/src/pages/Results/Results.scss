@@ -1,8 +1,51 @@
 .results {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: space-around;
   align-items: center;
+  gap: 2rem;
 
-  height: 100% !important;
-  width: 100% !important;
+  width: 100vw;
+
+  img {
+    width: 250px;
+  }
+
+  .results-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+
+    img {
+      width: 350px;
+    }
+
+    .results-container {
+      gap: 3rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    img {
+      width: 400px;
+    }
+
+    .results-container {
+      gap: 4rem;
+    }
+  }
+
+  @media (min-width: 1440px) {
+    img {
+      width: 500px;
+    }
+
+    .results-container {
+      gap: 6rem;
+    }
+  }
 }
