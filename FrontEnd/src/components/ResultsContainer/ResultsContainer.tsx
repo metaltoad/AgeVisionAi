@@ -23,7 +23,14 @@ export const ResultsContainer = ({
           </CardContent>
         </Card>
       ) : (
-        <div></div>
+        <Card className="results-card">
+          <CardContent className="results-card-content">
+            <div className="age-emotion-container">
+              <Typography>Age</Typography>
+              <Typography>Emotion</Typography>
+            </div>
+          </CardContent>
+        </Card>
       )}
     </React.Fragment>
   );

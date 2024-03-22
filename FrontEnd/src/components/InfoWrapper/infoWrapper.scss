@@ -3,7 +3,7 @@
 .info-wrapper {
   background-color: $action-background-color;
   border-radius: $global-border-radius;
-  color: white;
+  color: $white-color !important;
   font-size: 16px;
   font-weight: bold;
 
@@ -16,6 +16,7 @@
 
   @media (min-width: 768px) {
     width: 310px;
+    font-size: 18px !important;
   }
 
   @media (min-width: 1024px) {
@@ -24,5 +25,6 @@
 
   @media (min-width: 1440px) {
     width: 460px;
+    font-size: 20px !important;
   }
 }

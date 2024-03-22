@@ -5,7 +5,7 @@ import { ButtonsContainer } from "../../components/ButtonsContainer/ButtonsConta
 import { InfoWrapper } from "../../components/InfoWrapper";
 
 export const Results = () => {
-  const [isLoadingResults, setIsLoadingResults] = useState(true);
+  const [isLoadingResults, setIsLoadingResults] = useState(false);
 
   return (
     <div className="results">
