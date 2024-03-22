@@ -52,11 +52,12 @@ export function CameraButton() {
       setAge(Age);
       setEmotion(Emotion);
       navigate("/results");
-    } catch {
+    } catch (error) {
       showSnackBar(ERROR_MESSAGE, "error");
       setImage("");
       setAge(undefined);
       setEmotion("");
+      console.log("Error getting image", error);
     } finally {
       setIsLoadingResults(false);
     }
