@@ -10,7 +10,7 @@ export const Results = () => {
 
   return (
     <div className="results">
-      <img alt="uploaded image" src={image} />
+      <img alt="uploaded image" src={image || "/example-image.svg"} />
       <div className="results-container">
         <ResultsContainer />
         <ButtonsContainer />

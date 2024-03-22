@@ -6,7 +6,12 @@ import convertToBase64 from "../../utils/convertToBase64";
 import { provider } from "../../services/provider";
 import handleCamera from "../../utils/handleCamera";
 import { useAtom } from "jotai";
-import { imageAtom, isLoadingResultsAtom } from "../../store/mainAtom";
+import {
+  ageAtom,
+  emotionAtom,
+  imageAtom,
+  isLoadingResultsAtom,
+} from "../../store/mainAtom";
 import { useNavigate } from "react-router-dom";
 
 const VisuallyHiddenInput = styled("input")({
@@ -23,18 +28,26 @@ const VisuallyHiddenInput = styled("input")({
 
 export function CameraButton() {
   const [image, setImage] = useAtom(imageAtom);
+  const [age, setAge] = useAtom(ageAtom);
+  const [emotion, setEmotion] = useAtom(emotionAtom);
   const [isLoadingResults, setIsLoadingResults] = useAtom(isLoadingResultsAtom);
   const navigate = useNavigate();
 
   const handleUpload = async () => {
+    setIsLoadingResults(true);
+
     const base64 = await handleCamera(setImage);
 
-    const imageInfo = await provider.getImageInfo({
-      FileExtension: "png",
-      Image: base64,
-    });
+    const imageInfo = await provider.getImageInfo(
+      {
+        FileExtension: "png",
+        Image: base64,
+      },
+      setAge,
+      setEmotion,
+      setIsLoadingResults
+    );
     navigate("/results");
-    console.log("image info", imageInfo);
   };
 
   return (
@@ -52,11 +65,12 @@ export function CameraButton() {
 export function UploadButton() {
   const navigate = useNavigate();
   const [image, setImage] = useAtom(imageAtom);
+  const [age, setAge] = useAtom(ageAtom);
+  const [emotion, setEmotion] = useAtom(emotionAtom);
   const [isLoadingResults, setIsLoadingResults] = useAtom(isLoadingResultsAtom);
 
   const handleUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(event.target);
-
+    setIsLoadingResults(true);
     const file = event.target.files?.[0];
 
     if (file) {
@@ -65,17 +79,20 @@ export function UploadButton() {
       return;
     }
 
-    setIsLoadingResults(true);
     navigate("/results");
 
     const imageType = file.type.split("/")[1];
 
     const base64 = await convertToBase64({ File: file });
-    const imageInfo = await provider.getImageInfo({
-      FileExtension: imageType,
-      Image: base64,
-    });
-    console.log("image info", imageInfo);
+    const imageInfo = await provider.getImageInfo(
+      {
+        FileExtension: imageType,
+        Image: base64,
+      },
+      setAge,
+      setEmotion,
+      setIsLoadingResults
+    );
   };
 
   return (

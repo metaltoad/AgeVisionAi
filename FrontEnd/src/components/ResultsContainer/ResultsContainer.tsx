@@ -3,10 +3,17 @@ import { Typography, Card, CardContent } from "@mui/material";
 import "./ResultsContainer.scss";
 import ProgressBar from "../ProgressBar/ProgressBar";
 import { useAtom } from "jotai";
-import { isLoadingResultsAtom } from "../../store/mainAtom";
+import {
+  ageAtom,
+  emotionAtom,
+  isLoadingResultsAtom,
+} from "../../store/mainAtom";
 
 export const ResultsContainer = () => {
   const [isLoadingResults, setIsLoadingResults] = useAtom(isLoadingResultsAtom);
+  const [age, setAge] = useAtom(ageAtom);
+  const [emotion, setEmotion] = useAtom(emotionAtom);
+
   return (
     <React.Fragment>
       {isLoadingResults ? (
@@ -25,11 +32,11 @@ export const ResultsContainer = () => {
             <div className="age-emotion-container">
               <div>
                 <Typography>Age</Typography>
-                <Typography variant="h4">25</Typography>
+                <Typography variant="h4">{age}</Typography>
               </div>
               <div>
                 <Typography>Emotion</Typography>
-                <Typography variant="h4">52%</Typography>
+                <Typography variant="h4">{emotion}</Typography>
               </div>
             </div>
           </CardContent>

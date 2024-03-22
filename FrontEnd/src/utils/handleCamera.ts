@@ -1,4 +1,9 @@
-export default async function handleCamera(setImage): Promise<string> {
+import { SetStateAction } from "jotai";
+import { SetAtom } from "../interfaces/SetAtom";
+
+export default async function handleCamera(
+  setImage: SetAtom<[SetStateAction<string>], void>
+): Promise<string> {
   const stream = await navigator.mediaDevices.getUserMedia({ video: true });
 
   // Create video element and attach stream
