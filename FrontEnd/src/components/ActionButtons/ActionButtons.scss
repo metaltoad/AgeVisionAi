@@ -1,11 +1,11 @@
 @import "../../variables.scss";
 
 .action-button {
-  border: 1px solid #f3f3f3;
-  border-radius: $global-border-radius;
+  border: 1px solid #f3f3f3 !important;
+  border-radius: $global-border-radius !important;
   background-color: $action-background-color !important;
 
-  width: 120px;
+  width: 110px;
   aspect-ratio: 1/1;
 
   transition: 100ms;
